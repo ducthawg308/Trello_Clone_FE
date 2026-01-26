@@ -23,7 +23,63 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      /* =======================
+      * Core / Possible Errors
+      * ======================= */
+      'no-undef': 'error',
+      'no-debugger': 'error',
+      'eqeqeq': ['error', 'always'],
+      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+
+      /* =======================
+      * React / Hooks
+      * ======================= */
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
+      /* =======================
+      * Imports
+      * ======================= */
+      'import/no-duplicates': 'error',
+      'import/order': [
+        'warn',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+          ],
+          'newlines-between': 'always',
+        },
+      ],
+
+      /* =======================
+      * Style / Spacing
+      * ======================= */
+      'semi': ['warn', 'never'],
+      'quotes': ['warn', 'single', { avoidEscape: true }],
+      'array-bracket-spacing': ['warn', 'never'],
+      'keyword-spacing': ['warn', { before: true, after: true }],
+      'comma-spacing': ['warn', { before: false, after: true }],
+      'operator-spacing': ['warn', { before: true, after: true }],
+      'no-multi-spaces': ['warn', { ignoreEOLComments: true }],
+      'no-multiple-empty-lines': ['warn', { max: 1 }],
+
+      /* =======================
+      * Clean Code
+      * ======================= */
+      'prefer-const': 'warn',
+      'no-var': 'error',
+      'object-shorthand': 'warn',
+
+      /* =======================
+      * Safety / Best Practices
+      * ======================= */
+      'no-alert': 'warn',
     },
   },
 ])
