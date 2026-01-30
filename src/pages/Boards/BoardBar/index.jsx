@@ -11,15 +11,16 @@ import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import avt from '~/assets/avt.jpg'
+import { useColorScheme } from '@mui/material/styles'
 
 const MENU_STYLES = {
-  color: 'primary.main',
-  bgcolor: 'white',
+  color: 'white',
+  bgcolor: 'transparent',
   border: 'none',
   paddingX: '5px',
   borderRadius: '4px',
   '& .MuiSvgIcon-root': {
-    color: 'primary.main'
+    color: 'white'
   },
   '&:hover': {
     bgcolor: 'primary.50'
@@ -27,6 +28,8 @@ const MENU_STYLES = {
 }
 
 const BoardBar = () => {
+  const { mode } = useColorScheme()
+
   return (
     <Box sx={{
       width: '100%',
@@ -37,7 +40,8 @@ const BoardBar = () => {
       justifyContent: 'space-between',
       gap: 2,
       overflowX: 'auto',
-      borderTop: '1px solid #00bfa5'
+      borderBottom: '1px solid white',
+      bgcolor: mode === 'dark' ? '#34495e' : '#1976d2'
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Chip 
@@ -73,18 +77,34 @@ const BoardBar = () => {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Button variant='outlined' startIcon={<PersonAddIcon/>}>Invite</Button>
+        <Button
+          variant='outlined'
+          startIcon={<PersonAddIcon/>}
+          sx={{
+            color: 'white',
+            borderColor: 'white',
+            '&:hover': { borderColor: 'white' }
+          }}
+        >
+          Invite
+        </Button>
 
         <AvatarGroup
-          max={4}
+          max={6}
           sx={{
             '& .MuiAvatar-root': {
               width: 34,
               height: 34,
-              fontSize: 16
+              fontSize: 16,
             }
           }}
         >
+          <Tooltip title="DucThangDev">
+            <Avatar alt="Remy Sharp" src={avt} />
+          </Tooltip>
+          <Tooltip title="DucThangDev">
+            <Avatar alt="Remy Sharp" src={avt} />
+          </Tooltip>
           <Tooltip title="DucThangDev">
             <Avatar alt="Remy Sharp" src={avt} />
           </Tooltip>

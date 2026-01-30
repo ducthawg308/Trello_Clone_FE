@@ -1,9 +1,12 @@
 import Box from '@mui/material/Box'
+import { useColorScheme } from '@mui/material/styles'
 
 const BoardContent = () => {
+  const { mode } = useColorScheme()
+  
   return (
     <Box sx={{
-      backgroundColor: 'primary.main',
+      bgcolor: mode === 'dark' ? '#34495e' : '#1976d2',
       width: '100%',
       height: (theme) => `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
       display: 'flex',
