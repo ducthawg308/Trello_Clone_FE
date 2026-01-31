@@ -36,9 +36,10 @@ const AppBar = () => {
       justifyContent: 'space-between',
       gap: 2,
       overflowX: 'auto',
-      bgcolor: mode === 'dark' ? '#2c3e50' : '#1565c0'
+      bgcolor: mode === 'dark' ? '#2c3e50' : '#1565c0',
+      '&::-webkit-scrollbar-track': { m: 2}
     }}>
-      <Box sx={{ display: 'flex', alignItems: 'center'}}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2}}>
         <AppsIcon sx={{ color: 'white' }}/>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
           <SvgIcon component={TrelloIcon} fontSize='small' inheritViewBox sx={{ color: 'white' }}/>
