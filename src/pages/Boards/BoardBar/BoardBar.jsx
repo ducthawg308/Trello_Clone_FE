@@ -40,7 +40,6 @@ const BoardBar = () => {
       justifyContent: 'space-between',
       gap: 2,
       overflowX: 'auto',
-      borderBottom: '1px solid white',
       bgcolor: mode === 'dark' ? '#34495e' : '#1976d2',
       '&::-webkit-scrollbar-track': { m: 2}
     }}>
