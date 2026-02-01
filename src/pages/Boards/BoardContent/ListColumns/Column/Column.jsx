@@ -18,17 +18,20 @@ import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import { useColorScheme } from '@mui/material/styles'
 import ListCards from './ListCards/ListCards'
+import { mapOrder } from '~/utils/sorts'
 
-const Column = () => {
-    const { mode } = useColorScheme()
-    const [anchorEl, setAnchorEl] = useState(null)
-    const open = Boolean(anchorEl)
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget)
-    }
-    const handleClose = () => {
-      setAnchorEl(null)
-    }
+const Column = ({ column }) => {
+  const { mode } = useColorScheme()
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
 
   return (
     <Box sx={{
@@ -52,7 +55,7 @@ const Column = () => {
           cursor: 'pointer',
           fontSize: '1rem'
         }}>
-          Column Title
+          {column?.title}
         </Typography>
         <Box>
           <Tooltip title="More options">
@@ -120,7 +123,7 @@ const Column = () => {
         </Box>
       </Box>
 
-      <ListCards/>
+      <ListCards cards={orderedCards}/>
 
       <Box sx={{
         height: (theme) => theme.trello.columnFooterHeight,

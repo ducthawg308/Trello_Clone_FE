@@ -12,6 +12,7 @@ import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import avt from '~/assets/avt.jpg'
 import { useColorScheme } from '@mui/material/styles'
+import { capitalizeFirstLetter } from '~/utils/formatters'
 
 const MENU_STYLES = {
   color: 'white',
@@ -27,7 +28,7 @@ const MENU_STYLES = {
   }
 }
 
-const BoardBar = () => {
+const BoardBar = ({ board }) => {
   const { mode } = useColorScheme()
 
   return (
@@ -47,13 +48,13 @@ const BoardBar = () => {
         <Chip 
           sx={MENU_STYLES} 
           icon={<DashboardIcon />} 
-          label="DucThangDev" 
+          label={board?.title} 
           clickable
         />
         <Chip 
           sx={MENU_STYLES} 
           icon={<VpnLockIcon />} 
-          label="Public/PrivateWorkspace" 
+          label={capitalizeFirstLetter(board?.type)}
           clickable
         />
         <Chip 
