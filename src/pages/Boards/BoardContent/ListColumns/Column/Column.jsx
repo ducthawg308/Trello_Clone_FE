@@ -28,7 +28,6 @@ const Column = ({ column }) => {
     data: { ...column }
   })
   const dndKitColumnStyles = {
-    // touchAction: 'none',
     transform: CSS.Translate.toString(transform),
     transition,
     height: '100%',
@@ -145,7 +144,7 @@ const Column = ({ column }) => {
           </Box>
         </Box>
 
-        <ListCards cards={orderedCards}/>
+        <ListCards cards={orderedCards} columnId={column._id}/>
 
         <Box sx={{
           height: (theme) => theme.trello.columnFooterHeight,
