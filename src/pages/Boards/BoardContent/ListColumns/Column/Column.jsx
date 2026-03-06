@@ -23,6 +23,7 @@ import ListCards from './ListCards/ListCards'
 import { mapOrder } from '~/utils/sorts'
 import {useSortable} from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities'
+import { toast } from 'react-toastify'
 
 const Column = ({ column }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -54,7 +55,7 @@ const Column = ({ column }) => {
 
   const addNewCard = () => {
     if (!newCardTitle) {
-      console.error('Please enter Card Title')
+      toast.error('Please enter Card Title', { position: 'bottom-left' })
       return
     }
     console.log(newCardTitle)
