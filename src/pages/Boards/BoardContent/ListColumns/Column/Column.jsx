@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
+import CloseIcon from '@mui/icons-material/Close'
 import ContentCut from '@mui/icons-material/ContentCut'
 import Cloud from '@mui/icons-material/Cloud'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -14,6 +15,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import ContentCopy from '@mui/icons-material/ContentCopy'
 import ContentPaste from '@mui/icons-material/ContentPaste'
 import AddCardIcon from '@mui/icons-material/AddCard'
+import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import { useColorScheme } from '@mui/material/styles'
@@ -45,6 +47,21 @@ const Column = ({ column }) => {
   }
 
   const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+
+  const [newCardTitle, setNewCardTitle] = useState('')
+  const [openNewCardForm, setOpenNewCardForm] = useState(false)
+  const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
+
+  const addNewCard = () => {
+    if (!newCardTitle) {
+      console.error('Please enter Card Title')
+      return
+    }
+    console.log(newCardTitle)
+
+    toggleOpenNewCardForm()
+    setNewCardTitle('')
+  }
 
   return (
     <div 
@@ -149,14 +166,89 @@ const Column = ({ column }) => {
         <Box sx={{
           height: (theme) => theme.trello.columnFooterHeight,
           p: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+          
         }}>
-          <Button startIcon={<AddCardIcon/>}>Add new card</Button>
-          <Tooltip title='Drag to move'>
-            <DragHandleIcon sx={{ cursor: 'pointer' }}/>
-          </Tooltip>
+          {!openNewCardForm
+            ? <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <Button
+                  onClick = {toggleOpenNewCardForm}
+                  startIcon={<AddCardIcon/>}
+                >
+                  Add new card
+                </Button>
+                <Tooltip title='Drag to move'>
+                  <DragHandleIcon sx={{ cursor: 'pointer' }}/>
+                </Tooltip>
+              </Box>
+            : <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                <TextField
+                  label="Enter card title..."
+                  type="text"
+                  size="small"
+                  variant="outlined"
+                  autoFocus
+                  value={newCardTitle}
+                  onChange={(e) => setNewCardTitle(e.target.value)}
+                  sx={{
+                    '& label': { color: 'text.primary' },
+                    '& input': {
+                      color: (theme) => theme.palette.primary.main,
+                      bgColor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : 'white')
+                    },
+                    '& label.Mui-focused': { color: (theme) => theme.palette.primary.main },
+                    '& .MuiOutlinedInput-root': { 
+                      '& fieldset': { borderColor: (theme) => theme.palette.primary.main },
+                      '&:hover fieldset': { borderColor: (theme) => theme.palette.primary.main },
+                      '&.Mui-focused fieldset': { borderColor: (theme) => theme.palette.primary.main }
+                    }
+                  }}
+                />
+
+                <Box
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1
+                  }}
+                >
+                  <Button
+                    onClick={addNewCard}
+                    variant="contained" color="success" size="small"
+                    sx={{
+                      boxShadow:  'none',
+                      border: '0.5px solid',
+                      borderColor: (theme) => theme.palette.success.main,
+                      '&:hover': { bgcolor: (theme) => theme.palette.success.main }
+                    }}
+                  >
+                    Add
+                  </Button>
+                  <CloseIcon
+                    fontSize='small'
+                    sx={{
+                      color: (theme) => theme.palette.warning.light,
+                      cursor: 'pointer',
+                    }}
+                    onClick={toggleOpenNewCardForm}
+                  />
+                </Box>
+              </Box>
+          }
         </Box>
       </Box>
     </div>
