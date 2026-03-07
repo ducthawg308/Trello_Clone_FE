@@ -15,7 +15,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-const BoardContent = ({ board, createNewColumn, createNewCard }) => {
+const BoardContent = ({ board, createNewColumn, createNewCard, moveColumns }) => {
   const { mode } = useColorScheme()
   const [orderedColumns, setOrderedColumns] = useState([])
   const mouseSensor = useSensor(MouseSensor, {activationConstraint: { distance: 10 }})
@@ -179,6 +179,7 @@ const BoardContent = ({ board, createNewColumn, createNewCard }) => {
         const oldColumnIndex = orderedColumns.findIndex(c => c._id === active.id)
         const newColumnIndex = orderedColumns.findIndex(c => c._id === over.id)
         const dndOrderedColumns = arrayMove(orderedColumns, oldColumnIndex, newColumnIndex)
+        moveColumns(dndOrderedColumns)
         setOrderedColumns(dndOrderedColumns)
       }
     }
