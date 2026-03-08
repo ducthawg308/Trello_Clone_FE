@@ -23,7 +23,7 @@ const ListColumns = ({ columns, createNewColumn, createNewCard }) => {
       title: newColumnTitle
     }
 
-    await createNewColumn(newColumnData)
+    createNewColumn(newColumnData)
 
     toggleOpenNewColumnForm()
     setNewColumnTitle('')

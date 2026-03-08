@@ -20,7 +20,6 @@ import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import { useColorScheme } from '@mui/material/styles'
 import ListCards from './ListCards/ListCards'
-import { mapOrder } from '~/utils/sorts'
 import {useSortable} from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities'
 import { toast } from 'react-toastify'
@@ -47,7 +46,7 @@ const Column = ({ column, createNewCard }) => {
     setAnchorEl(null)
   }
 
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+  const orderedCards = column.cards
 
   const [newCardTitle, setNewCardTitle] = useState('')
   const [openNewCardForm, setOpenNewCardForm] = useState(false)
@@ -64,7 +63,7 @@ const Column = ({ column, createNewCard }) => {
       columnId: column._id
     }
 
-    await createNewCard(newCardData)
+    createNewCard(newCardData)
 
     toggleOpenNewCardForm()
     setNewCardTitle('')
