@@ -24,8 +24,13 @@ import {useSortable} from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis'
 
-const Column = ({ column, createNewCard, deleteColumnDetails }) => {
+const Column = ({ column }) => {
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: column._id,
     data: { ...column }
@@ -64,7 +69,25 @@ const Column = ({ column, createNewCard, deleteColumnDetails }) => {
       columnId: column._id
     }
 
-    createNewCard(newCardData)
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id
+    })
+
+    const newBoard = {
+      ...board,
+      columns: board.columns.map(column =>
+        column._id === createdCard.columnId
+          ? {
+              ...column,
+              cards: [...column.cards, createdCard],
+              cardOrderIds: [...column.cardOrderIds, createdCard._id]
+            }
+          : column
+      )
+    }
+
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     toggleOpenNewCardForm()
     setNewCardTitle('')
@@ -81,7 +104,17 @@ const Column = ({ column, createNewCard, deleteColumnDetails }) => {
     })
 
     if (confirmed) {
-      deleteColumnDetails(column._id)
+      const newBoard = {
+        ...board,
+        columns: board.columns.filter(c => c._id !== column._id),
+        columnOrderIds: board.columnOrderIds.filter(_id => _id !== column._id)
+      }
+  
+      dispatch(updateCurrentActiveBoard(newBoard))
+  
+      deleteColumnDetailsAPI(column._id).then(res => {
+        toast.success(res?.deleteResult)
+      })
     }
   }
 
@@ -204,8 +237,7 @@ const Column = ({ column, createNewCard, deleteColumnDetails }) => {
 
         <Box sx={{
           height: (theme) => theme.trello.columnFooterHeight,
-          p: 2,
-          
+          p: 2
         }}>
           {!openNewCardForm
             ? <Box

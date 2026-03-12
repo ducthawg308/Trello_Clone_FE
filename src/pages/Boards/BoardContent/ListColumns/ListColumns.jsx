@@ -7,8 +7,13 @@ import { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { createNewColumnAPI } from '~/apis'
 
-const ListColumns = ({ columns, createNewColumn, createNewCard, deleteColumnDetails }) => {
+const ListColumns = ({ columns }) => {
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
   const [newColumnTitle, setNewColumnTitle] = useState('')
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
@@ -23,7 +28,18 @@ const ListColumns = ({ columns, createNewColumn, createNewCard, deleteColumnDeta
       title: newColumnTitle
     }
 
-    createNewColumn(newColumnData)
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    })
+
+    const newBoard = {
+      ...board,
+      columns: [...board.columns, createdColumn],
+      columnOrderIds: [...board.columnOrderIds, createdColumn._id]
+    }
+
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     toggleOpenNewColumnForm()
     setNewColumnTitle('')
@@ -40,7 +56,7 @@ const ListColumns = ({ columns, createNewColumn, createNewCard, deleteColumnDeta
         overflowY: 'hidden',
         '&::-webkit-scrollbar-track': { m: 2}
       }}>
-        {columns?.map((column) => (<Column key={column._id} column={column} createNewCard={createNewCard} deleteColumnDetails={deleteColumnDetails} />))}
+        {columns?.map((column) => (<Column key={column._id} column={column}/>))}
 
         {!openNewColumnForm
           ? <Box onClick = {toggleOpenNewColumnForm} sx={{
