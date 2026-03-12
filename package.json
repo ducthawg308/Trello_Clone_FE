@@ -17,11 +17,15 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
+    "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.6",
     "lodash": "^4.17.23",
     "material-ui-confirm": "^4.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.2",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.13.1",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
