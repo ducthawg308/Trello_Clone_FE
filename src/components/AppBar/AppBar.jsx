@@ -41,7 +41,11 @@ const AppBar = () => {
       '&::-webkit-scrollbar-track': { m: 2}
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2}}>
-        <AppsIcon sx={{ color: 'white' }}/>
+        <Link to="/boards">
+          <Tooltip title="Board List">
+            <AppsIcon sx={{ color: 'white', verticalAlign: 'middle' }}/>
+          </Tooltip>
+        </Link>
         <Link to="/">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <SvgIcon component={TrelloIcon} fontSize='small' inheritViewBox sx={{ color: 'white' }}/>
