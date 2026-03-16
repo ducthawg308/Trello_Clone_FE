@@ -99,8 +99,7 @@ const Column = ({ column }) => {
       title: 'Delete Column?',
       description: 'This action will permanently delete your Column and its Cards! Are you sure?',
       confirmationText: 'Confirm',
-      cancellationText: 'Cancel',
-      buttonOrder: ['confirm', 'cancel']
+      cancellationText: 'Cancel'
     })
 
     if (confirmed) {

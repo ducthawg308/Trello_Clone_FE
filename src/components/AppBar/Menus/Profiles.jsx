@@ -13,6 +13,7 @@ import Logout from '@mui/icons-material/Logout'
 import { useDispatch, useSelector } from 'react-redux'
 import { useConfirm } from 'material-ui-confirm'
 import { logoutUserAPI, selectCurrentUser } from '~/redux/user/userSlice'
+import { Link } from 'react-router-dom'
 
 const Profiles = () => {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -32,8 +33,7 @@ const Profiles = () => {
     const { confirmed } = await confirmLogout({
       title: 'Log out of your account?',
       confirmationText: 'Confirm',
-      cancellationText: 'Cancel',
-      buttonOrder: ['confirm', 'cancel']
+      cancellationText: 'Cancel'
     })
 
     if (confirmed) {
@@ -71,14 +71,16 @@ const Profiles = () => {
           }
         }}
       >
-        <MenuItem sx={{
-          '&:hover': { color: 'success.light' }
-        }}>
-          <Avatar
-            sx={{ width: 28, height: 28, mr: 2 }} 
-            src={currentUser?.avatar}
-          /> Profile
-        </MenuItem>
+        <Link to="/settings/account" style={{ color: 'inherit' }}>
+          <MenuItem sx={{
+            '&:hover': { color: 'success.light' }
+          }}>
+            <Avatar
+              sx={{ width: 28, height: 28, mr: 2 }} 
+              src={currentUser?.avatar}
+            /> Profile
+          </MenuItem>
+        </Link>
         <Divider />
         <MenuItem>
           <ListItemIcon>
