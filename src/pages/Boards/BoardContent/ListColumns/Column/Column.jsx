@@ -1,4 +1,3 @@
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -26,7 +25,8 @@ import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
-import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis'
+import { createNewCardAPI, deleteColumnDetailsAPI, updateColumnDetailsAPI } from '~/apis'
+import ToggleFocusInput from '~/components/Form/ToggleFocusInput'
 
 const Column = ({ column }) => {
   const dispatch = useDispatch()
@@ -117,6 +117,24 @@ const Column = ({ column }) => {
     }
   }
 
+  const onUpdateColumnTitle = (newTitle) => {
+    updateColumnDetailsAPI(column._id, { title: newTitle }).then(() => {
+      const newBoard = {
+      ...board,
+      columns: board.columns.map(c =>
+        c._id === column._id
+          ? {
+              ...column,
+              title: newTitle
+            }
+          : column
+      )
+    }
+
+    dispatch(updateCurrentActiveBoard(newBoard))
+    })
+  }
+
   return (
     <div 
       ref={setNodeRef}
@@ -142,13 +160,11 @@ const Column = ({ column }) => {
             alignItems: 'center',
             justifyContent: 'space-between'
           }}>
-          <Typography variant='h6' sx={{
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            fontSize: '1rem'
-          }}>
-            {column?.title}
-          </Typography>
+          <ToggleFocusInput
+            value={column?.title}
+            onChangedValue={onUpdateColumnTitle}
+            data-no-dnd="true"
+          />
           <Box>
             <Tooltip title="More options">
               <ExpandMoreIcon
