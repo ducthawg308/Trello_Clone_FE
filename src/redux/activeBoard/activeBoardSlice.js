@@ -32,6 +32,19 @@ export const activeBoardSlice = createSlice({
 
       // Cập nhật lại dữ liêu của currentActiveBoard
       state.currentActiveBoard = board
+    },
+    updateCardInBoard: (state, action) => {
+      const incomingCard = action.payload
+
+      const column = state.currentActiveBoard.columns.find(i => i._id === incomingCard.columnId)
+      if (column) {
+        const card = column.cards.find(i => i._id === incomingCard._id)
+        if (card) {
+          Object.keys(incomingCard).forEach(key => {
+            card[key] = incomingCard[key]
+          })
+        }
+      }
     }
   },
   // ExtraReducers: Nơi xử lý dữ liệu bất đồng bộ
@@ -40,6 +53,9 @@ export const activeBoardSlice = createSlice({
       .addCase(fetchBoardDetailsAPI.fulfilled, (state, action) => {
         // action.payload ở đây chính là response.data trả về từ API ở trên
         const board = action.payload
+
+        // Thành viên trong board = [owners] + [members]
+        board.FE_allUsers = board.owners.concat(board.members)
 
         // Xử lý dữ liệu nếu cần thiết ....
         board.columns.forEach((column) => {
@@ -55,7 +71,7 @@ export const activeBoardSlice = createSlice({
   }
 })
 
-export const { updateCurrentActiveBoard } = activeBoardSlice.actions
+export const { updateCurrentActiveBoard, updateCardInBoard } = activeBoardSlice.actions
 
 export const selectCurrentActiveBoard = (state) => {
   return state.activeBoard.currentActiveBoard
