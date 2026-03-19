@@ -28,19 +28,35 @@ const SidebarItem = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: '8px',
   cursor: 'pointer',
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   padding: '12px 16px',
   borderRadius: '8px',
+
+  backgroundColor: '#fff',
+
+  ...theme.applyStyles('dark', {
+    backgroundColor: '#1A2027'
+  }),
+
   '&:hover': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#33485D' : theme.palette.grey[300]
+    backgroundColor: theme.palette.grey[300],
+
+    ...theme.applyStyles('dark', {
+      backgroundColor: '#33485D'
+    })
   },
+
   '&.active': {
-    color: theme.palette.mode === 'dark' ? '#90caf9' : '#0c66e4',
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#e9f2ff'
+    color: '#0c66e4',
+    backgroundColor: '#e9f2ff',
+
+    ...theme.applyStyles('dark', {
+      color: '#90caf9',
+      backgroundColor: '#1A2027'
+    })
   }
 }))
 
-function Boards() {
+const Boards = () => {
   // Số lượng bản ghi boards hiển thị tối đa trên 1 page tùy dự án (thường sẽ là 12 cái)
   const [boards, setBoards] = useState(null)
   // Tổng toàn bộ số lượng bản ghi boards có trong Database mà phía BE trả về để FE dùng tính toán phân trang

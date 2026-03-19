@@ -17,7 +17,6 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
-import { useColorScheme } from '@mui/material/styles'
 import ListCards from './ListCards/ListCards'
 import {useSortable} from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities'
@@ -42,7 +41,6 @@ const Column = ({ column }) => {
     opacity: isDragging ? 0.5 : undefined
   }
 
-  const { mode } = useColorScheme()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -127,7 +125,7 @@ const Column = ({ column }) => {
               ...column,
               title: newTitle
             }
-          : column
+          : c
       )
     }
 
@@ -143,15 +141,18 @@ const Column = ({ column }) => {
     >
       <Box
         {...listeners}
-        sx={{
+        sx={(theme) => ({
           minWidth: '300px',
           maxWidth: '300px',
-          bgcolor: mode === 'dark' ? '#333643' : '#ebecf0',
+          bgcolor: '#ebecf0',
+          ...theme.applyStyles('dark', {
+            bgcolor: '#333643'
+          }),
           ml: 2,
           borderRadius: '6px',
           height: 'fit-content',
           maxHeight: (theme) => `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
-        }}
+        })}
       >
         <Box sx={{
             height: (theme) => theme.trello.columnHeaderHeight,
@@ -290,19 +291,19 @@ const Column = ({ column }) => {
                   data-no-dnd="true"
                   value={newCardTitle}
                   onChange={(e) => setNewCardTitle(e.target.value)}
-                  sx={{
-                    '& label': { color: 'text.primary' },
+                  sx={(theme) => ({
+                    '& label': { color: 'theme.vars.palette.text.primary' },
                     '& input': {
-                      color: (theme) => theme.palette.primary.main,
-                      bgColor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : 'white')
+                      color: theme.palette.primary.main,
+                      bgColor: (theme.palette.mode === 'dark' ? '#333643' : 'white')
                     },
-                    '& label.Mui-focused': { color: (theme) => theme.palette.primary.main },
+                    '& label.Mui-focused': { color: theme.palette.primary.main },
                     '& .MuiOutlinedInput-root': { 
-                      '& fieldset': { borderColor: (theme) => theme.palette.primary.main },
-                      '&:hover fieldset': { borderColor: (theme) => theme.palette.primary.main },
-                      '&.Mui-focused fieldset': { borderColor: (theme) => theme.palette.primary.main }
+                      '& fieldset': { borderColor: theme.palette.primary.main },
+                      '&:hover fieldset': { borderColor: theme.palette.primary.main },
+                      '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main }
                     }
-                  }}
+                  })}
                 />
 
                 <Box

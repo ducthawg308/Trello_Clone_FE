@@ -19,19 +19,36 @@ import { styled } from '@mui/material/styles'
 import { createNewBoardAPI } from '~/apis'
 
 const SidebarItem = styled(Box)(({ theme }) => ({
+
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
   cursor: 'pointer',
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   padding: '12px 16px',
   borderRadius: '8px',
+
+  bgcolor: '#fff',
+
+  ...theme.applyStyles('dark', {
+    bgcolor: '#1A2027'
+  }),
+
   '&:hover': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#33485D' : theme.palette.grey[300]
+    backgroundColor: theme.palette.grey[300],
+
+    ...theme.applyStyles('dark', {
+      backgroundColor: '#33485D'
+    })
   },
+
   '&.active': {
-    color: theme.palette.mode === 'dark' ? '#90caf9' : '#0c66e4',
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#e9f2ff'
+    color: '#0c66e4',
+    bgcolor: '#e9f2ff',
+
+    ...theme.applyStyles('dark', {
+      color: '#90caf9',
+      bgcolor: '#1A2027'
+    })
   }
 }))
 
@@ -76,20 +93,24 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 600,
-          bgcolor: 'white',
-          boxShadow: 24,
-          borderRadius: '8px',
-          border: 'none',
-          outline: 0,
-          padding: '20px 30px',
-          backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#1A2027' : 'white'
-        }}>
+        <Box 
+          sx={(theme) => ({
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 600,
+            boxShadow: 24,
+            borderRadius: '8px',
+            border: 'none',
+            outline: 0,
+            padding: '20px 30px',
+            bgcolor: '#fff',
+            ...theme.applyStyles('dark', {
+              bgcolor: '#1A2027'
+            })
+          })}
+        >
           <Box sx={{
             position: 'absolute',
             top: '10px',

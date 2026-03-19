@@ -5,14 +5,11 @@ import VpnLockIcon from '@mui/icons-material/VpnLock'
 import AddToDriveIcon from '@mui/icons-material/AddToDrive'
 import BoltIcon from '@mui/icons-material/Bolt'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import Avatar from '@mui/material/Avatar'
-import AvatarGroup from '@mui/material/AvatarGroup'
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import avt from '~/assets/avt.jpg'
-import { useColorScheme } from '@mui/material/styles'
 import { capitalizeFirstLetter } from '~/utils/formatters'
+import BoardUserGroup from './BoardUserGroup'
 
 const MENU_STYLES = {
   color: 'white',
@@ -29,10 +26,8 @@ const MENU_STYLES = {
 }
 
 const BoardBar = ({ board }) => {
-  const { mode } = useColorScheme()
-
   return (
-    <Box sx={{
+    <Box sx={(theme) => ({
       width: '100%',
       height: (theme) => theme.trello.boardBarHeight,
       paddingX: 2,
@@ -41,9 +36,9 @@ const BoardBar = ({ board }) => {
       justifyContent: 'space-between',
       gap: 2,
       overflowX: 'auto',
-      bgcolor: mode === 'dark' ? '#34495e' : '#1976d2',
+      bgcolor: theme.vars.palette.background.primary,
       '&::-webkit-scrollbar-track': { m: 2}
-    }}>
+    })}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Tooltip title={board?.description}>
           <Chip 
@@ -92,46 +87,7 @@ const BoardBar = ({ board }) => {
           Invite
         </Button>
 
-        <AvatarGroup
-          max={6}
-          sx={{
-            gap: '10px',
-            '& .MuiAvatar-root': {
-              width: 34,
-              height: 34,
-              fontSize: 16,
-              border: 'none',
-              color: 'white',
-              cursor: 'pointer',
-              '&:first-of-type': { bgcolor: '#a4b0de'}
-            }
-          }}
-        >
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-          <Tooltip title="DucThangDev">
-            <Avatar alt="Remy Sharp" src={avt} />
-          </Tooltip>
-        </AvatarGroup>
+        <BoardUserGroup/>
       </Box>
     </Box>
   )

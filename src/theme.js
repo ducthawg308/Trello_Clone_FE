@@ -18,15 +18,21 @@ const theme = extendTheme({
   colorSchemes: {
     light: {
       palette: {
-        primary: {
-          main: '#1976d2'
+        // primary: {
+        //   main: '#1976d2'
+        // },
+        background: {
+          primary: '#1976d2'
         }
       }
     },
     dark: {
       palette: {
-        primary: {
-          main: '#90caf9'
+        // primary: {
+        //   main: '#34495e'
+        // },
+        background: {
+          primary: '#34495e'
         }
       }
     }

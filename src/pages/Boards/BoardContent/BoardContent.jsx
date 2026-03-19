@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box'
-import { useColorScheme } from '@mui/material/styles'
 import ListColumns from './ListColumns/ListColumns'
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
@@ -15,7 +14,6 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 }
 
 const BoardContent = ({ board, moveColumns, moveCardInTheSameColumn, moveCardToDifferentColumn }) => {
-  const { mode } = useColorScheme()
   const [orderedColumns, setOrderedColumns] = useState([])
   const mouseSensor = useSensor(MouseSensor, {activationConstraint: { distance: 10 }})
   const touchSensor = useSensor(TouchSensor, {activationConstraint: { delay: 250, tolerance: 500 }})
@@ -216,12 +214,12 @@ const BoardContent = ({ board, moveColumns, moveCardInTheSameColumn, moveCardToD
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <Box sx={{
-        bgcolor: mode === 'dark' ? '#34495e' : '#1976d2',
+      <Box sx={(theme) => ({
+        bgcolor: theme.vars.palette.background.primary,
         width: '100%',
         height: (theme) => theme.trello.boardContentHeight,
         p: '10px 0'
-      }}>
+      })}>
         <ListColumns columns={orderedColumns}/>
         <DragOverlay dropAnimation={customDropAnimation}>
           {!activeDragItemType && null}

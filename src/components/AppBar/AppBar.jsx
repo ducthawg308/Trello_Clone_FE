@@ -17,18 +17,16 @@ import Tooltip from '@mui/material/Tooltip'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import Profiles from './Menus/Profiles'
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
-import { useColorScheme } from '@mui/material/styles'
 import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
 import { Link } from 'react-router-dom'
 
 const AppBar = () => {
-  const { mode } = useColorScheme()
   const [searchValue, setSearchValue] = useState('')
 
   return (
-    <Box sx={{
+    <Box sx={(theme) => ({
       width: '100%',
       height: (theme) => theme.trello.appBarHeight,
       paddingX: 2,
@@ -37,9 +35,12 @@ const AppBar = () => {
       justifyContent: 'space-between',
       gap: 2,
       overflowX: 'auto',
-      bgcolor: mode === 'dark' ? '#2c3e50' : '#1565c0',
+      bgcolor: '#1565c0',
+      ...theme.applyStyles('dark', {
+        bgcolor: '#2c3e50'
+      }),
       '&::-webkit-scrollbar-track': { m: 2}
-    }}>
+    })}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2}}>
         <Link to="/boards">
           <Tooltip title="Board List">
