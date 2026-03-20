@@ -10,7 +10,7 @@ import Button from '@mui/material/Button'
 import {useSortable} from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities'
 import { useDispatch } from 'react-redux'
-import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { showModalActiveCard, updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 const Card = ({ card }) => {
   const dispatch = useDispatch()
@@ -34,6 +34,8 @@ const Card = ({ card }) => {
   const setActiveCard = () => {
     // Cập nhật data cho cái activeCard trong Redux
     dispatch(updateCurrentActiveCard(card))
+    // Hiện modal activeCard lên
+    dispatch(showModalActiveCard())
   }
 
   return (
