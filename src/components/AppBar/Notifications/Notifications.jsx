@@ -14,7 +14,10 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import DoneIcon from '@mui/icons-material/Done'
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchInvitationsAPI, selectCurrentNotifications, updateBoardInvitationAPI } from '~/redux/notifications/notificationsSlice'
+import { addNotification, fetchInvitationsAPI, selectCurrentNotifications, updateBoardInvitationAPI } from '~/redux/notifications/notificationsSlice'
+import { socketIoInstance } from '~/main'
+import { selectCurrentUser } from '~/redux/user/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 const BOARD_INVITATION_STATUS = {
   PENDING: 'PENDING',
@@ -24,26 +27,53 @@ const BOARD_INVITATION_STATUS = {
 
 function Notifications() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClickNotificationIcon = (event) => {
     setAnchorEl(event.currentTarget)
+    setNewNotification(false)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
 
+  const [newNotification, setNewNotification] = useState(false)
+
   // Lấy dữ liệu notifications từ trong Redux
   const notifications = useSelector(selectCurrentNotifications)
+  // Lấy dữ liệu user trong Redux
+  const currentUser = useSelector(selectCurrentUser)
   
   // Fetch danh sách các lời mời invations
   useEffect(() => {
     dispatch(fetchInvitationsAPI())
-  }, [dispatch])
+
+    // Tạo một cái function xử lý khi nhân được sự kiện real time
+    const onReceiveNewInvitation = (invitation) => {
+      // Nếu user đang đăng nhập hiện tại mà chúng ta lưu trong Redux chính là thằng invitee trong bản ghi invitation
+      if (invitation.inviteeId === currentUser._id) {
+        // B1: Thêm bản ghi invitation mới vào trong redux
+        dispatch(addNotification(invitation))
+        // B2: Cập nhật trạng thái đang có thông báo đến
+        setNewNotification(true)
+      }
+    }
+
+    // Lắng nghe một cái sự kiện realtime từ phía server gửi về (BE_USER_INVITED_TO_BOARD)
+    socketIoInstance.on('BE_USER_INVITED_TO_BOARD', onReceiveNewInvitation)
+    
+    // Clean Up sự kiện để ngăn chặn việc bị đăng ký lặp lại sự kiện
+    return () => {
+      socketIoInstance.off('BE_USER_INVITED_TO_BOARD', onReceiveNewInvitation)
+    }
+  }, [dispatch, currentUser._id])
 
   const updateBoardInvitation = (status, invitationId) => {
     dispatch(updateBoardInvitationAPI({ status, invitationId })).then(res => {
-      console.log(res)
+      if (res.payload.boardInvitation.status === BOARD_INVITATION_STATUS.ACCEPTED) {
+        navigate(`/boards/${res.payload.boardInvitation.boardId}`)
+      }
     }) 
   }
 
@@ -52,8 +82,7 @@ function Notifications() {
       <Tooltip title="Notifications">
         <Badge
           color="warning"
-          // variant="none"
-          variant="dot"
+          variant={newNotification ? 'dot' : 'none'}
           sx={{ cursor: 'pointer' }}
           id="basic-button-open-notification"
           aria-controls={open ? 'basic-notification-drop-down' : undefined}
