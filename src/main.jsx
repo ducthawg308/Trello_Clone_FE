@@ -14,9 +14,6 @@ import { persistStore } from 'redux-persist'
 const persistor = persistStore(store)
 import { injectStore } from '~/utils/authorizeAxios.js'
 injectStore(store)
-import { io } from 'socket.io-client'
-import { API_ROOT } from './apis/environment.js'
-export const socketIoInstance = io(API_ROOT)
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
